@@ -82,7 +82,8 @@ bool WebSocketClient::analyzeRequest() {
         auth += username;
         auth += ":";
         auth += password;
-        char authChar[] = auth.toCharArray();
+        char authChar[100];
+        auth.toCharArray(authChar, auth.length());
         int len = auth.length() * 4 / 3;
         while(len % 4)
         {
@@ -161,6 +162,9 @@ bool WebSocketClient::analyzeRequest() {
     return serverKey.equals(String(b64Result));
 }
 
+bool WebSocketClient::connected(){
+    return socket_client->connected() && !socket_client->available();
+}
 
 bool WebSocketClient::handleStream(String& data, uint8_t *opcode) {
     uint8_t msgtype;
