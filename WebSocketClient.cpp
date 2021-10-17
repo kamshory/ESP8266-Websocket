@@ -75,6 +75,27 @@ bool WebSocketClient::analyzeRequest() {
     socket_client->print(F("Host: "));
     socket_client->print(host);
     socket_client->print(CRLF); 
+
+    if(std::string(username) != "" && std::string(password) != "")
+    {
+        String auth = "";
+        auth += username;
+        auth += ":";
+        auth += password;
+        char authChar[] = auth.toCharArray();
+        int len = auth.length() * 4 / 3;
+        while(len % 4)
+        {
+            len++;
+        }
+        char encodedChar[len];
+        base64_encode(encodedChar, authChar, auth.length());
+
+        socket_client->print(F("Authorization: "));
+        socket_client->print(encodedChar);
+        socket_client->print(CRLF);
+    }
+
     socket_client->print(F("Sec-WebSocket-Key: "));
     socket_client->print(key);
     socket_client->print(CRLF);

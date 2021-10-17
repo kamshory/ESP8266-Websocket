@@ -99,6 +99,8 @@ public:
     char *path;
     char *host;
     char *protocol;
+    char *username = "";
+    char *password = "";
 
 private:
     Client *socket_client;
